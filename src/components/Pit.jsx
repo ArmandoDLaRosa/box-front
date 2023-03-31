@@ -266,29 +266,29 @@ export default function Qual() {
               </Form.Item>
             </Panel>
             <Panel header="Especificaciones de programación" key="section3" id="section3">
-              <Form.Item label="Lenguaje de programación" name="field4">
+              <Form.Item label="Lenguaje de programación" name="field11">
                 <Radio.Group>
                   <Radio value="1">Java</Radio>
                   <Radio value="2">LabView</Radio>
                   <Radio value="3">C++</Radio>
                 </Radio.Group>
               </Form.Item>
-              <Form.Item label="Visión por computadora" name="field5">
+              <Form.Item label="Visión por computadora" name="field12">
                 <Radio.Group>
                   <Radio value="0">No</Radio>
                   <Radio value="1">Sí</Radio>
                 </Radio.Group>
               </Form.Item>
-              <Form.Item label="# de cámaras" name="field6">
+              <Form.Item label="# de cámaras" name="field13">
                 <ClickerInput />
               </Form.Item>
-              <Form.Item label="¿Usa sensores?" name="field5">
+              <Form.Item label="¿Usa sensores?" name="field14">
                 <Radio.Group>
                   <Radio value="0">No</Radio>
                   <Radio value="1">Sí</Radio>
                 </Radio.Group>
               </Form.Item>
-              <Form.Item label="Tipos de sensores usados" name="field10">
+              <Form.Item label="Tipos de sensores usados" name="field15">
                 <Select mode="multiple">
                   <Select.Option value="Giroscopio">
                     <div style={{ display: "flex", alignItems: "center" }}>
@@ -322,23 +322,23 @@ export default function Qual() {
                   </Select.Option>
                 </Select>
               </Form.Item>
-              <Form.Item label="¿Tiene autónomo?" name="field5">
+              <Form.Item label="¿Tiene autónomo?" name="field16">
                 <Radio.Group>
                   <Radio value="0">No</Radio>
                   <Radio value="1">Sí</Radio>
                 </Radio.Group>
               </Form.Item>
-              <Form.Item label="¿Hace el mobility?" name="field5">
+              <Form.Item label="¿Hace el mobility?" name="field17">
                 <Radio.Group>
                   <Radio value="0">No</Radio>
                   <Radio value="1">Sí</Radio>
                   <Radio value="1">Tal vez</Radio>
                 </Radio.Group>
               </Form.Item>
-              <Form.Item label="¿Cuántas game pieces coloca en el autónomo?" name="field6">
+              <Form.Item label="¿Cuántas game pieces coloca en el autónomo?" name="field18">
                 <ClickerInput />
               </Form.Item>
-              <Form.Item label="Nivel en que las coloca" name="field8" >
+              <Form.Item label="Nivel en que las coloca" name="field19" >
                 <Checkbox.Group >
                   <Row style={{ display: "flex" }}>
                     <Col span={8}>
