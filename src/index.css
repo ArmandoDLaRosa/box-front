@@ -11,3 +11,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.my-input-number .ant-input-number-handler-wrap {
+  display: none;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+}
+
+.quant-collapse .ant-collapse-header {
+  font-weight: bold;
+}

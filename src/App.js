@@ -1,25 +1,105 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { Pit, Qual, Quant } from "./components";
+
+import "antd/dist/reset.css";
+import { Layout, Menu, Typography } from "antd";
+import { RobotOutlined, FileTextOutlined, NumberOutlined } from "@ant-design/icons";
+
+const { Header, Content, Sider } = Layout;
+const { Title } = Typography;
+
+function getItem(label, key, icon, items) {
+  return {
+    key,
+    icon,
+    items,
+    label,
+  };
+}
+
+const routes = [
+  {
+    path: '/',
+    element: <div><Pit /></div>
+  },
+  {
+    path: '/Qual',
+    element: <div><Qual /></div>
+  },
+  {
+    path: '/Quant',
+    element: <div><Quant /></div>
+  }
+]
+
+const items = [
+  getItem("Pits", "1", <Link to="/"><RobotOutlined /></Link>),
+  getItem("Qual", "2", <Link to="/Qual"><FileTextOutlined /></Link>),
+  getItem("Quant", "3", <Link to="/Quant"><NumberOutlined /></Link>),
+
+];
 
 function App() {
+  const [collapsed, setCollapsed] = useState(false);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <Router>
+      <Layout
+        style={{
+          minHeight: "100vh",
+        }}
+      >
+        <Sider
+          collapsible
+          collapsed={collapsed}
+          onCollapse={(value) => setCollapsed(value)}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <div className="logo" />
+          <Menu
+            theme="dark"
+            defaultSelectedKeys={["1"]}
+            mode="inline"
+            items={items}
+          />
+        </Sider>
+        <Layout className="site-layout">
+          <Header
+            className="site-layout-background"
+            style={{
+              padding: 5,
+              textAlign: "center"
+            }}>
+            <Title style={{ color: "white" }} >The Box</Title>
+          </Header>
+          <Content
+            style={{
+              margin: "0 16px",
+              backgroundColor: "white"
+            }}
+          >
+            <div
+              className="site-layout-background"
+              style={{
+                padding: 24,
+                minHeight: 360,
+              }}
+            >
+              <Routes>
+                {
+                  routes.map((route, index) => (
+                    <Route
+                      key={index}
+                      path={route.path}
+                      element={route.element}
+                    />
+                  ))
+                }
+              </Routes>
+            </div>
+          </Content>
+        </Layout>
+      </Layout>
+    </Router>
   );
 }
 
