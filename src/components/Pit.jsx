@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Card, Col, Checkbox, Row, Radio, Button, Collapse, Form, Input, Typography, InputNumber, Select } from 'antd';
-import ReactQuill from 'react-quill';
+import { Col, Checkbox, Row, Radio, Button, Collapse, Form, Input, Typography, Select } from 'antd';
 import ClickerInput from "./clicker";
+import SliderInput from "./slidericon";
+import TeamInput from "./teams";
+import LengthInput from "./lngt_unit";
+import WeightInput from "./wght_unit";
+
 import 'react-quill/dist/quill.snow.css';
 
 const { Title } = Typography;
@@ -27,6 +31,7 @@ export default function Qual() {
       field3: 'section1',
       // Section 2
       field4: 'section2',
+      field4_unit: 'section2',
       field5: 'section2',
       field6: 'section2',
       field7: 'section2',
@@ -59,6 +64,7 @@ export default function Qual() {
       // Section 6
       field31: 'section6',
       field32: 'section6',
+      field33: 'section6',
     };
     setActiveSections(fieldsWithError.map(({ name }) => fieldToPanelMap[name]));
     form.scrollToField(fieldsWithError[0].name);
@@ -83,6 +89,8 @@ export default function Qual() {
     }
   };
 
+
+
   return (
     <div>
       <Row gutter={[8, 8]}>
@@ -105,108 +113,80 @@ export default function Qual() {
               </Form.Item>
             </Panel>
             <Panel header="Especificaciones del robot" key="section2" id="section2">
-              <Form.Item label="Altura del robot (metros)" name="field4" >
-                <InputNumber
-                  defaultValue="0"
-                  min="0"
-                  max="10"
-                  step="0.01"
-                  stringMode
-                />
+              <Form.Item label="Altura del robot" name="field4">
+                <LengthInput />
               </Form.Item>
-              <Form.Item label="Peso del robot (kilos)" name="field5" >
-                <InputNumber
-                  defaultValue="0"
-                  min="0"
-                  max="10"
-                  step="0.01"
-                  stringMode
-                />
+              <Form.Item label="Peso del robot" name="field5" >
+                <WeightInput />
               </Form.Item>
               <Form.Item label="# de motores en el chasis" name="field6" >
-                <InputNumber
-                  defaultValue="0"
-                  min="0"
-                  step="1"
-                  stringMode
-                />
+                <ClickerInput />
               </Form.Item>
               <Form.Item label="# de motores en el intake" name="field7" >
-                <InputNumber
-                  defaultValue="0"
-                  min="0"
-                  step="1"
-                  stringMode
-                />
+                <ClickerInput />
               </Form.Item>
               <Form.Item label="# de motores en el elevador" name="field8" >
-                <InputNumber
-                  defaultValue="0"
-                  min="0"
-                  step="1"
-                  stringMode
-                />
+                <ClickerInput />
               </Form.Item>
               <Form.Item label="Tipo de chasis" name="field9">
-                <Select >
-
+                <Select>
                   <Select.Option value="KOP">
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <img alt="field" src={require(`../image/STARTING.jpg`)} style={{ width: 70, height: 50 }} />
+                      <img alt="field" src={require(`../image/KOP.jpg`)} style={{ width: 70, height: 50 }} />
                       <div style={{ marginLeft: "0.5em", marginTop: "-1.5em" }}>KOP</div>
                     </div>
                   </Select.Option>
                   <Select.Option value="Tread Tank">
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <img alt="field" src={require(`../image/STARTING.jpg`)} style={{ width: 70, height: 50 }} />
+                      <img alt="field" src={require(`../image/TREAD.jpg`)} style={{ width: 70, height: 50 }} />
                       <div style={{ marginLeft: "0.5em", marginTop: "-1.5em" }}>Tread Tank</div>
                     </div>
                   </Select.Option>
                   <Select.Option value="West coast">
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <img alt="field" src={require(`../image/STARTING.jpg`)} style={{ width: 70, height: 50 }} />
+                      <img alt="field" src={require(`../image/WEST.jpg`)} style={{ width: 70, height: 50 }} />
                       <div style={{ marginLeft: "0.5em", marginTop: "-1.5em" }}>West coast</div>
                     </div>
                   </Select.Option>
                   <Select.Option value="H-drive">
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <img alt="field" src={require(`../image/STARTING.jpg`)} style={{ width: 70, height: 50 }} />
+                      <img alt="field" src={require(`../image/HDRIVE.jpg`)} style={{ width: 70, height: 50 }} />
                       <div style={{ marginLeft: "0.5em", marginTop: "-1.5em" }}>H-drive</div>
                     </div>
                   </Select.Option>
                   <Select.Option value="Mecanum">
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <img alt="field" src={require(`../image/STARTING.jpg`)} style={{ width: 70, height: 50 }} />
+                      <img alt="field" src={require(`../image/MECANUM.jpg`)} style={{ width: 70, height: 50 }} />
                       <div style={{ marginLeft: "0.5em", marginTop: "-1.5em" }}>Mecanum</div>
                     </div>
                   </Select.Option>
                   <Select.Option value="Swerve">
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <img alt="field" src={require(`../image/STARTING.jpg`)} style={{ width: 70, height: 50 }} />
+                      <img alt="field" src={require(`../image/SWERVE.jpg`)} style={{ width: 70, height: 50 }} />
                       <div style={{ marginLeft: "0.5em", marginTop: "-1.5em" }}>Swerve</div>
                     </div>
                   </Select.Option>
                   <Select.Option value="Holonomic">
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <img alt="field" src={require(`../image/STARTING.jpg`)} style={{ width: 70, height: 50 }} />
+                      <img alt="field" src={require(`../image/HOLONOMIC.jpg`)} style={{ width: 70, height: 50 }} />
                       <div style={{ marginLeft: "0.5em", marginTop: "-1.5em" }}>Holonomic</div>
                     </div>
                   </Select.Option>
                   <Select.Option value="Kiwi">
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <img alt="field" src={require(`../image/STARTING.jpg`)} style={{ width: 70, height: 50 }} />
+                      <img alt="field" src={require(`../image/KIWI.jpg`)} style={{ width: 70, height: 50 }} />
                       <div style={{ marginLeft: "0.5em", marginTop: "-1.5em" }}>Kiwi</div>
                     </div>
                   </Select.Option>
                   <Select.Option value="Butterfly">
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <img alt="field" src={require(`../image/STARTING.jpg`)} style={{ width: 70, height: 50 }} />
+                      <img alt="field" src={require(`../image/BUTTERFLY.jpg`)} style={{ width: 70, height: 50 }} />
                       <div style={{ marginLeft: "0.5em", marginTop: "-1.5em" }}>Butterfly</div>
                     </div>
                   </Select.Option>
                   <Select.Option value="Hybrid">
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <img alt="field" src={require(`../image/STARTING.jpg`)} style={{ width: 70, height: 50 }} />
+                      <img alt="field" src={require(`../image/HYBRID.jpg`)} style={{ width: 70, height: 50 }} />
                       <div style={{ marginLeft: "0.5em", marginTop: "-1.5em" }}>Hybrid</div>
                     </div>
                   </Select.Option>
@@ -216,49 +196,49 @@ export default function Qual() {
                 <Select mode="multiple">
                   <Select.Option value="KOP">
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <img alt="field" src={require(`../image/STARTING.jpg`)} style={{ width: 70, height: 50 }} />
+                      <img alt="field" src={require(`../image/KOP_wheel.jpg`)} style={{ width: 70, height: 50 }} />
                       <div style={{ marginLeft: "0.5em", marginTop: "-1.975em" }}>KOP</div>
                     </div>
                   </Select.Option>
                   <Select.Option value="Plaction">
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <img alt="field" src={require(`../image/STARTING.jpg`)} style={{ width: 70, height: 50 }} />
+                      <img alt="field" src={require(`../image/PLACTION_wheel.jpg`)} style={{ width: 70, height: 50 }} />
                       <div style={{ marginLeft: "0.5em", marginTop: "-1.975em" }}>Plaction</div>
                     </div>
                   </Select.Option>
                   <Select.Option value="Neumática">
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <img alt="field" src={require(`../image/STARTING.jpg`)} style={{ width: 70, height: 50 }} />
+                      <img alt="field" src={require(`../image/NEUMATICA_wheel.jpg`)} style={{ width: 70, height: 50 }} />
                       <div style={{ marginLeft: "0.5em", marginTop: "-1.975em" }}>Neumática</div>
                     </div>
                   </Select.Option>
                   <Select.Option value="Omni">
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <img alt="field" src={require(`../image/STARTING.jpg`)} style={{ width: 70, height: 50 }} />
+                      <img alt="field" src={require(`../image/OMNI_wheel.jpg`)} style={{ width: 70, height: 50 }} />
                       <div style={{ marginLeft: "0.5em", marginTop: "-1.975em" }}>Omni</div>
                     </div>
                   </Select.Option>
                   <Select.Option value="Traction">
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <img alt="field" src={require(`../image/STARTING.jpg`)} style={{ width: 70, height: 50 }} />
+                      <img alt="field" src={require(`../image/TRACTION_wheel.jpg`)} style={{ width: 70, height: 50 }} />
                       <div style={{ marginLeft: "0.5em", marginTop: "-1.975em" }}>Traction</div>
                     </div>
                   </Select.Option>
                   <Select.Option value="Colson">
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <img alt="field" src={require(`../image/STARTING.jpg`)} style={{ width: 70, height: 50 }} />
+                      <img alt="field" src={require(`../image/COLSON_wheel.jpg`)} style={{ width: 70, height: 50 }} />
                       <div style={{ marginLeft: "0.5em", marginTop: "-1.975em" }}>Colson</div>
                     </div>
                   </Select.Option>
                   <Select.Option value="Swerve">
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <img alt="field" src={require(`../image/STARTING.jpg`)} style={{ width: 70, height: 50 }} />
+                      <img alt="field" src={require(`../image/SWERVE_wheel.jpg`)} style={{ width: 70, height: 50 }} />
                       <div style={{ marginLeft: "0.5em", marginTop: "-1.975em" }}>Swerve</div>
                     </div>
                   </Select.Option>
                   <Select.Option value="Ninguna">
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <img alt="field" src={require(`../image/STARTING.jpg`)} style={{ width: 70, height: 50 }} />
+                      <img alt="field" src={require(`../image/OTHER_wheel.jpg`)} style={{ width: 70, height: 50 }} />
                       <div style={{ marginLeft: "0.5em", marginTop: "-1.975em" }}>Ninguna de las anteriores</div>
                     </div>
                   </Select.Option>
@@ -292,31 +272,31 @@ export default function Qual() {
                 <Select mode="multiple">
                   <Select.Option value="Giroscopio">
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <img alt="field" src={require(`../image/STARTING.jpg`)} style={{ width: 70, height: 50 }} />
+                      <img alt="field" src={require(`../image/GYROSCOPE.jpg`)} style={{ width: 70, height: 50 }} />
                       <div style={{ marginLeft: "0.5em", marginTop: "-1.975em" }}>Giroscopio</div>
                     </div>
                   </Select.Option>
                   <Select.Option value="Ultrasónico">
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <img alt="field" src={require(`../image/STARTING.jpg`)} style={{ width: 70, height: 50 }} />
+                      <img alt="field" src={require(`../image/ULTRASONIC.jpg`)} style={{ width: 70, height: 50 }} />
                       <div style={{ marginLeft: "0.5em", marginTop: "-1.975em" }}>Ultrasónico</div>
                     </div>
                   </Select.Option>
                   <Select.Option value="Navx">
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <img alt="field" src={require(`../image/STARTING.jpg`)} style={{ width: 70, height: 50 }} />
+                      <img alt="field" src={require(`../image/NAVX.jpg`)} style={{ width: 70, height: 50 }} />
                       <div style={{ marginLeft: "0.5em", marginTop: "-1.975em" }}>Navx</div>
                     </div>
                   </Select.Option>
                   <Select.Option value="Encoders">
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <img alt="field" src={require(`../image/STARTING.jpg`)} style={{ width: 70, height: 50 }} />
+                      <img alt="field" src={require(`../image/ENCODERS.jpg`)} style={{ width: 70, height: 50 }} />
                       <div style={{ marginLeft: "0.5em", marginTop: "-1.975em" }}>Encoders</div>
                     </div>
                   </Select.Option>
                   <Select.Option value="Otro">
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <img alt="field" src={require(`../image/STARTING.jpg`)} style={{ width: 70, height: 50 }} />
+                      <img alt="field" src={require(`../image/SENSOR.jpg`)} style={{ width: 70, height: 50 }} />
                       <div style={{ marginLeft: "0.5em", marginTop: "-1.975em" }}>Otro</div>
                     </div>
                   </Select.Option>
@@ -332,7 +312,7 @@ export default function Qual() {
                 <Radio.Group>
                   <Radio value="0">No</Radio>
                   <Radio value="1">Sí</Radio>
-                  <Radio value="1">Tal vez</Radio>
+                  <Radio value="2">Tal vez</Radio>
                 </Radio.Group>
               </Form.Item>
               <Form.Item label="¿Cuántas game pieces coloca en el autónomo?" name="field18">
@@ -359,12 +339,173 @@ export default function Qual() {
                   </Row>
                 </Checkbox.Group>
               </Form.Item>
+              <Form.Item label="Charge Station Status" name="field20">
+                <Radio.Group>
+                  <Radio value="1">Docked</Radio>
+                  <Radio value="2">Engaged</Radio>
+                </Radio.Group>
+              </Form.Item>
+              <Form.Item label="¿Recoge gp en autónomo?" name="field21">
+                <Radio.Group>
+                  <Radio value="0">No</Radio>
+                  <Radio value="1">Sí</Radio>
+                  <Radio value="2">Tal vez</Radio>
+                </Radio.Group>
+              </Form.Item>
             </Panel>
             <Panel header="Mecanismos" key="section4" id="section4">
+              <Form.Item label="¿De dónde recoge las gp?" name="field22" >
+                <Checkbox.Group >
+                  <Row style={{ display: "inline" }}>
+                    <Col span={8}>
+                      <Checkbox value="A" style={{ lineHeight: '32px' }} >
+                        Piso
+                      </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="B" style={{ lineHeight: '32px' }} >
+                        Single substation
+                      </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="C" style={{ lineHeight: '32px' }}>
+                        Double substation
+                      </Checkbox>
+                    </Col>
+                  </Row>
+                </Checkbox.Group>
+              </Form.Item>
+              <Form.Item label="¿De dónde recoge las gp?" name="field23" >
+                <Checkbox.Group >
+                  <Row style={{ display: "box" }}>
+                    <Col span={8}>
+                      <Checkbox value="A" style={{ lineHeight: '32px' }} >
+                        1
+                      </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="B" style={{ lineHeight: '32px' }} >
+                        2
+                      </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="C" style={{ lineHeight: '32px' }}>
+                        3
+                      </Checkbox>
+                    </Col>
+                  </Row>
+                </Checkbox.Group>
+              </Form.Item>
+              <Form.Item label="Tipo de mecanismo del intake" name="field24">
+                <Radio.Group>
+                  <Radio value="0">Neumático</Radio>
+                  <Radio value="1">Motorizado</Radio>
+                  <Radio value="2">Actuadores Lineales</Radio>
+                  <Radio value="3">Posicionamiento</Radio>
+                </Radio.Group>
+              </Form.Item>
+              <Form.Item label="Tipo de mecanismo del elevador" name="field25" >
+                <Checkbox.Group >
+                  <Row style={{ display: "inline" }}>
+                    <Col span={8}>
+                      <Checkbox value="A" style={{ lineHeight: '32px' }} >
+                        Neumático
+                      </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="B" style={{ lineHeight: '32px' }} >
+                        Motorizado
+                      </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="C" style={{ lineHeight: '32px' }}>
+                        Disparador
+                      </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="D" style={{ lineHeight: '32px' }}>
+                        Catapulta
+                      </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="E" style={{ lineHeight: '32px' }}>
+                        Torreta
+                      </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="F" style={{ lineHeight: '32px' }}>
+                        Rampa
+                      </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="G" style={{ lineHeight: '32px' }}>
+                        Everybot
+                      </Checkbox>
+                    </Col>
+                  </Row>
+                </Checkbox.Group>
+              </Form.Item>
+              <Form.Item label="¿Se balancea?" name="field26">
+                <Radio.Group>
+                  <Radio value="0">No</Radio>
+                  <Radio value="1">Sí</Radio>
+                </Radio.Group>
+              </Form.Item>
+              <Form.Item label="¿De manera automática?" name="field27">
+                <Radio.Group>
+                  <Radio value="0">No</Radio>
+                  <Radio value="1">Sí</Radio>
+                </Radio.Group>
+              </Form.Item>
             </Panel>
             <Panel header="Pre visualización del partido" key="section5" id="section5">
-              <Panel header="Comentarios" key="section6" id="section6">
-              </Panel>
+              <Form.Item label="Número de gp colocadas" name="field28">
+                <ClickerInput />
+              </Form.Item>
+              <Form.Item label="¿Hace defensa?" name="field29">
+                <Radio.Group>
+                  <Radio value="0">No</Radio>
+                  <Radio value="1">Sí</Radio>
+                  <Radio value="2">Tal vez</Radio>
+                </Radio.Group>
+              </Form.Item>
+              <Form.Item label="Prioridad del equipo" name="field30" >
+                <Checkbox.Group >
+                  <Row style={{ display: "inline" }}>
+                    <Col span={8}>
+                      <Checkbox value="A" style={{ lineHeight: '32px' }} >
+                        Conos
+                      </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="B" style={{ lineHeight: '32px' }} >
+                        Cubos
+                      </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="C" style={{ lineHeight: '32px' }}>
+                        Nivel específico
+                      </Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="D" style={{ lineHeight: '32px' }}>
+                        Asistir a alianza/defensa
+                      </Checkbox>
+                    </Col>
+                  </Row>
+                </Checkbox.Group>
+              </Form.Item>
+            </Panel>
+            <Panel header="Comentarios" key="section6" id="section6">
+              <Form.Item label="Evaluación del robot" name="field31">
+                <SliderInput />
+              </Form.Item>
+              <Form.Item label="Evaluación del equipo" name="field32">
+                <SliderInput />
+              </Form.Item>
+              <Form.Item label="Comentario" name="field33">
+                <Input.TextArea showCount maxLength={100} />
+              </Form.Item>
             </Panel>
           </Collapse>
           <Form.Item>
