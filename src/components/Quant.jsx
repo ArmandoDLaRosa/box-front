@@ -13,25 +13,71 @@ export default function Quant() {
   const [defenseValue, setDefenseValue] = useState('');
 
   const onFinish = (values) => {
-    console.log(values);
-    form.resetFields();
-
+    const match_id = values['field2'];
+    const robot_id = values['field1'];
+    const user = values['field3'];
+    delete values['field2'];
+    delete values['field1'];
+    delete values['field3'];
+    fetch('http://127.0.0.1:5000/quant', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          match_id:  match_id,
+          robot_id:  robot_id, 
+          stats:  JSON.stringify(values), 
+          created_by: user, 
+          updated_by: user
+        }),
+      })
+      .then(() => {
+        console.log("Success: ", values)
+        form.resetFields();
+        setActiveSections(['section1']);
+      })
+      .catch((error) => {
+        console.log('Error: ', error);
+      });
   };
 
-  const onFinish2 = (values) => {
-
-    console.log('form validation failed');
+  const onError = (values) => {
     const fieldsWithError = form.getFieldsError().filter(({ errors }) => errors.length > 0);
     const fieldToPanelMap = {
+      // Section 1
       field1: 'section1',
       field2: 'section1',
       field3: 'section1',
+      // Section 2
       field4: 'section2',
+      field5: 'section2',
+      field6: 'section2',
+      field7: 'section2',
+      field8: 'section2',
+      field9: 'section2',
+      field10: 'section2',
+      field11: 'section2',
+      // Section 3
+      field12: 'section3',
+      field13: 'section3',
+      field14: 'section3',
+      field15: 'section3',
+      field16: 'section3',
+      field17: 'section3',
+      // Section 4
+      field18: 'section4',
+      field19: 'section4',
+      field20: 'section4',
+      field21: 'section4',
     };
     setActiveSections(fieldsWithError.map(({ name }) => fieldToPanelMap[name]));
     form.scrollToField(fieldsWithError[0].name);
   };
 
+
+  
   const handleSectionChange = (openPanels) => {
     console.log(openPanels);
 
@@ -59,7 +105,7 @@ export default function Quant() {
         </Col>
       </Row>
       <Row gutter={[5, 5]}>
-        <Form form={form} onFinish={onFinish} onFinishFailed={onFinish2} scrollToFirstError={true} style={{ width: '100%', fontSize: '1.8em' }}>
+        <Form form={form} onFinish={onFinish} onFinishFailed={onError} scrollToFirstError={true} style={{ width: '100%', fontSize: '1.8em' }}>
           <Collapse activeKey={activeSections} onChange={handleSectionChange} className="quant-collapse">
             <Panel header="Match Data" key="section1" id="section1">
               <Form.Item label="Número de Equipo" name="field1" rules={[{ required: true }]}>
@@ -215,7 +261,7 @@ export default function Quant() {
                   disabled={defenseValue === '0'}
                 />
               </Form.Item>
-              <Form.Item label="Desconexión" name="field21">
+              <Form.Item label="Desconexión" name="field21" >
                 <Radio.Group onChange={handleDefenseChange} value={defenseValue}>
                   <Radio value="0">NO</Radio>
                   <Radio value="1">YES</Radio>

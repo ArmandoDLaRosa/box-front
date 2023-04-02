@@ -99,7 +99,7 @@ export default function Qual() {
         </Col>
       </Row>
       <Row gutter={[5, 5]}>
-        <Form form={form} onFinish={onFinish} onFinishFailed={onError} scrollToFirstError={{ behavior: 'smooth' }} style={{ width: '100%', fontSize: '1.8em' }}>
+        <Form form={form} onFinish={onFinish} onFinishFailed={onError} scrollToFirstError={true} style={{ width: '100%', fontSize: '1.8em' }}>
           <Collapse activeKey={activeSections} onChange={handleSectionChange} className="quant-collapse">
             <Panel header="Team Data" key="section1" id="section1">
               <Form.Item label="Número de Equipo" name="field1" rules={[{ required: true, message: 'Falta!' }]}>

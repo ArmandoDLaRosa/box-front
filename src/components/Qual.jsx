@@ -10,37 +10,47 @@ export default function Qual() {
   const [value, setValue] = useState('');
   const [form] = Form.useForm();
   const [activeSections, setActiveSections] = useState(['section1']);
-
+  
   const onFinish = (values) => {
-    console.log('onFinish called');
-    form.validateFields().then(() => {
-      console.log(values);
-      fetch('http://127.0.0.1:5000/qual', {
+    fetch('http://127.0.0.1:5000/qual', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ match_id:  values["field2"],robot_id:  values["field1"], analysis: values["field4"], created_by: values["field3"], updated_by: values["field3"]}),
-      }),
-      form.resetFields();
-    }).catch((error) => {
-      console.log('form validation failed');
-      const fieldsWithError = form.getFieldsError().filter(({ errors }) => errors.length > 0);
-      const fieldToPanelMap = {
-        field1: 'section1',
-        field2: 'section1',
-        field3: 'section1',
-        field4: 'section2',
-      };
-      setActiveSections(fieldsWithError.map(({ name }) => fieldToPanelMap[name]));
-      form.scrollToField(fieldsWithError[0].name);
-    });
+        body: JSON.stringify({ 
+          match_id:  values["field2"],
+          robot_id:  values["field1"], 
+          analysis:  values["field4"], 
+          created_by: values["field3"], 
+          updated_by: values["field3"]
+        }),
+      })
+      .then(() => {
+        console.log("Success: ", values)
+        form.resetFields();
+        setActiveSections(['section1']);
+      })
+      .catch((error) => {
+        console.log('Error: ', error);
+      });
+  };
+  
+  const onError = (values) => {
+    const fieldsWithError = form.getFieldsError().filter(({ errors }) => errors.length > 0);
+    const fieldToPanelMap = {
+      // Section 1
+      field1: 'section1',
+      field2: 'section1',
+      field3: 'section1',
+      // Section 2
+      field4: 'section2'
+    };
+    setActiveSections(fieldsWithError.map(({ name }) => fieldToPanelMap[name]));
+    form.scrollToField(fieldsWithError[0].name);
   };
 
   const handleSectionChange = (openPanels) => {
-    console.log(openPanels);
-
     setActiveSections(openPanels.slice(-1)); // keep only the last panel that was opened
     const lastOpenedPanel = openPanels.slice(-1)[0];
 
@@ -61,7 +71,7 @@ export default function Qual() {
         </Col>
       </Row>
       <Row gutter={[5, 5]}>
-        <Form form={form} onFinish={onFinish} onFinishFailed={onFinish} scrollToFirstError={{ behavior: 'smooth' }} style={{ width: '100%', fontSize: '1.8em' }}>
+        <Form form={form} onFinish={onFinish} onFinishFailed={onError} scrollToFirstError={true} style={{ width: '100%', fontSize: '1.8em' }}>
           <Collapse activeKey={activeSections} onChange={handleSectionChange} className="quant-collapse">
             <Panel header="Match Data" key="section1" id="section1">
               <Form.Item label="Número de Equipo" name="field1" rules={[{ required: true, message: 'Falta!' }]}>
