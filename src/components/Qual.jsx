@@ -84,7 +84,7 @@ export default function Qual() {
                 <Input />
               </Form.Item>
             </Panel>
-            <Panel header="Autonomo" key="section2" id="section2">
+            <Panel header="Match" key="section2" id="section2">
               <Form.Item label="Análisis" name="field4" rules={[{ required: true, message: 'Falta!' }]}>
                 <ReactQuill theme="snow" value={value} onChange={setValue} />
               </Form.Item>
