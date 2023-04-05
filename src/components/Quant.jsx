@@ -145,18 +145,18 @@ export default function Quant() {
                     </Col>
                     <Row>
                       <Col span={8}>
-                        <Checkbox value="A" style={{ lineHeight: '32px' }} >
-                          1
+                        <Checkbox value="1" style={{ lineHeight: '32px' }} >
+                          A
                         </Checkbox>
                       </Col>
                       <Col span={8}>
-                        <Checkbox value="B" style={{ lineHeight: '32px' }} >
-                          2
+                        <Checkbox value="2" style={{ lineHeight: '32px' }} >
+                          B
                         </Checkbox>
                       </Col>
                       <Col span={8}>
-                        <Checkbox value="C" style={{ lineHeight: '32px' }}>
-                          3
+                        <Checkbox value="3" style={{ lineHeight: '32px' }}>
+                          C
                         </Checkbox>
                       </Col>
                     </Row>
@@ -168,8 +168,8 @@ export default function Quant() {
               </Form.Item>
               <Form.Item label="Mobility Points" name="field10">
                 <Radio.Group>
-                  <Radio value="0">NO</Radio>
-                  <Radio value="1">YES</Radio>
+                  <Radio value="0">No</Radio>
+                  <Radio value="1">Yes</Radio>
                 </Radio.Group>
               </Form.Item>
               <Form.Item label="Estado de la rampa" name="field11">
@@ -198,18 +198,18 @@ export default function Quant() {
                     </Col>
                     <Row>
                       <Col span={8}>
-                        <Checkbox value="A" style={{ lineHeight: '32px' }} >
-                          1
+                        <Checkbox value="1" style={{ lineHeight: '32px' }} >
+                          A
                         </Checkbox>
                       </Col>
                       <Col span={8}>
-                        <Checkbox value="B" style={{ lineHeight: '32px' }} >
-                          2
+                        <Checkbox value="2" style={{ lineHeight: '32px' }} >
+                          B
                         </Checkbox>
                       </Col>
                       <Col span={8}>
-                        <Checkbox value="C" style={{ lineHeight: '32px' }}>
-                          3
+                        <Checkbox value="3" style={{ lineHeight: '32px' }}>
+                          C
                         </Checkbox>
                       </Col>
                     </Row>

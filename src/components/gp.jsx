@@ -17,17 +17,17 @@ export default function GPInput({onChange }) {
                   <Row>
                     <Col span={8}>
                       <Checkbox value="1" style={{ lineHeight: '32px' }} disabled={ambosChecked  || bChecked}  onChange={(e) => setAChecked(e.target.checked)}>
-                        A
+                        Cono
                       </Checkbox>
                     </Col>
                     <Col span={8}>
                       <Checkbox value="2" style={{ lineHeight: '32px' }} disabled={ambosChecked || aChecked} onChange={(e) => setBChecked(e.target.checked)}>
-                        B
+                        Cubos
                       </Checkbox>
                     </Col>
                     <Col span={8}>
                       <Checkbox value="3" style={{ lineHeight: '32px' }} disabled={aChecked || bChecked}  onChange={handleAmbosChange}   >
-                        AMBOS
+                        Ambos
                       </Checkbox>
                     </Col>                    
                   </Row>
