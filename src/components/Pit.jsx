@@ -375,7 +375,7 @@ export default function Qual() {
                   </Row>
                 </Checkbox.Group>
               </Form.Item>
-              <Form.Item label="¿De dónde recoge las gp?" name="field23" >
+              <Form.Item label="¿En qué nivel coloca las gp en teleop?" name="field23" >
                 <Checkbox.Group >
                   <Row style={{ display: "box" }}>
                     <Col span={8}>
