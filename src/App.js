@@ -35,8 +35,8 @@ const routes = [
 
 const items = [
   getItem("Pits", "1", <Link to="/"><RobotOutlined /></Link>),
-  getItem("Qual", "2", <Link to="/Qual"><FileTextOutlined /></Link>),
-  getItem("Quant", "3", <Link to="/Quant"><NumberOutlined /></Link>),
+  getItem("Qualitative", "2", <Link to="/Qual"><FileTextOutlined /></Link>),
+  getItem("Quantitative", "3", <Link to="/Quant"><NumberOutlined /></Link>),
 
 ];
 
