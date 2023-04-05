@@ -19,7 +19,7 @@ export default function Quant() {
     delete values['field2'];
     delete values['field1'];
     delete values['field3'];
-    fetch('http://127.0.0.1:5000/quant', {
+    fetch('https://siabox.herokuapp.com/quant', {
         method: 'POST',
         headers: {
           Accept: 'application/json',

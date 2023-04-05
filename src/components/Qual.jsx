@@ -12,7 +12,7 @@ export default function Qual() {
   const [activeSections, setActiveSections] = useState(['section1']);
   
   const onFinish = (values) => {
-    fetch('http://127.0.0.1:5000/qual', {
+    fetch('https://siabox.herokuapp.com/qual', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
