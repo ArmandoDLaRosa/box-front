@@ -5,7 +5,7 @@ const { Option } = Select;
 
 export default function WeightInput({ value = {}, onChange }) {
     const [number, setNumber] = useState();
-    const [currency, setCurrency] = useState('mt');
+    const [currency, setCurrency] = useState('kg');
     const triggerChange = (changedValue) => {
         onChange?.({
             number,
