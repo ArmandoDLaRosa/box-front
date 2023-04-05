@@ -1,0 +1,38 @@
+{
+  "files": {
+    "main.css": "/static/css/main.d1a2a0f5.css",
+    "main.js": "/static/js/main.5a0bda28.js",
+    "static/js/787.80b1e9bb.chunk.js": "/static/js/787.80b1e9bb.chunk.js",
+    "static/media/SENSOR.jpg": "/static/media/SENSOR.476a8bab5f5f2d2767c0.jpg",
+    "static/media/NAVX.jpg": "/static/media/NAVX.0204a58c8fcfdb417a45.jpg",
+    "static/media/ULTRASONIC.jpg": "/static/media/ULTRASONIC.6a0c1318299b9724140a.jpg",
+    "static/media/STARTING.jpg": "/static/media/STARTING.f49fb534403186bd7b76.jpg",
+    "service-worker.js": "/service-worker.js",
+    "static/media/HYBRID.jpg": "/static/media/HYBRID.a3d4d3add6cccc027adf.jpg",
+    "static/media/GAMEP.jpg": "/static/media/GAMEP.fc31e0da3bc462db4045.jpg",
+    "static/media/GYROSCOPE.jpg": "/static/media/GYROSCOPE.ba16925876aecdf9e1a8.jpg",
+    "static/media/OTHER_wheel.jpg": "/static/media/OTHER_wheel.514e36325450cdaf8b75.jpg",
+    "static/media/ENCODERS.jpg": "/static/media/ENCODERS.1e3bd35ee11005aab59c.jpg",
+    "static/media/SWERVE_wheel.jpg": "/static/media/SWERVE_wheel.3b87a19fae272ad8c962.jpg",
+    "static/media/KIWI.jpg": "/static/media/KIWI.c09390673c8bd6babd02.jpg",
+    "static/media/NEUMATICA_wheel.jpg": "/static/media/NEUMATICA_wheel.9d5b667badcd30b2ec3d.jpg",
+    "static/media/SWERVE.jpg": "/static/media/SWERVE.bc5a14985ec79f12eead.jpg",
+    "static/media/TRACTION_wheel.jpg": "/static/media/TRACTION_wheel.ba375132a16dfe4aafef.jpg",
+    "static/media/PLACTION_wheel.jpg": "/static/media/PLACTION_wheel.b400d20e55951b4458c8.jpg",
+    "static/media/HDRIVE.jpg": "/static/media/HDRIVE.dfc243cb286e7a023aa9.jpg",
+    "static/media/KOP.jpg": "/static/media/KOP.c71bb635acffb9b35336.jpg",
+    "static/media/KOP_wheel.jpg": "/static/media/KOP_wheel.8595a37aeb316aae45ee.jpg",
+    "static/media/WEST.jpg": "/static/media/WEST.af8facb6ef4bcc5ba677.jpg",
+    "static/media/HOLONOMIC.jpg": "/static/media/HOLONOMIC.b1cde37e076f9ad346b9.jpg",
+    "static/media/OMNI_wheel.jpg": "/static/media/OMNI_wheel.48710c8a023419d01670.jpg",
+    "static/media/BUTTERFLY.jpg": "/static/media/BUTTERFLY.d27efcb7bffd23ddacaf.jpg",
+    "index.html": "/index.html",
+    "main.d1a2a0f5.css.map": "/static/css/main.d1a2a0f5.css.map",
+    "main.5a0bda28.js.map": "/static/js/main.5a0bda28.js.map",
+    "787.80b1e9bb.chunk.js.map": "/static/js/787.80b1e9bb.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d1a2a0f5.css",
+    "static/js/main.5a0bda28.js"
+  ]
+}
