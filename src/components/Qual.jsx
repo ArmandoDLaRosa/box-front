@@ -10,32 +10,62 @@ export default function Qual() {
   const [value, setValue] = useState('');
   const [form] = Form.useForm();
   const [activeSections, setActiveSections] = useState(['section1']);
-  
+
   const onFinish = (values) => {
     fetch('https://siabox.herokuapp.com/qual', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          match_id:  values["field2"],
-          robot_id:  values["field1"], 
-          analysis:  values["field4"], 
-          created_by: values["field3"], 
-          updated_by: values["field3"]
-        }),
-      })
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        match_id: values["field2"],
+        robot_id: values["field1"],
+        analysis: values["field4"] || "",
+        created_by: values["field3"],
+        updated_by: values["field3"]
+      }),
+    })
       .then(() => {
-        console.log("Success: ", values)
+        alert('Match posted!');
         form.resetFields();
         setActiveSections(['section1']);
       })
       .catch((error) => {
-        console.log('Error: ', error);
+          console.error(error);
+          if ('serviceWorker' in navigator && 'SyncManager' in window) {
+            // Register a sync event and queue the request
+            navigator.serviceWorker.ready
+              .then((registration) => {
+                // Queue the failed request
+                registration.sync.register('pitSync').then(() => {
+                  // Clear input variables
+                  form.resetFields();
+                  setActiveSections(['section1']);
+      
+                  // Show queued message
+                  alert('Match queued!');
+      
+                  // Listen for sync event to know when the sync is complete
+                  navigator.serviceWorker.addEventListener('message', (event) => {
+                    if (event.data.type === 'syncComplete') {
+                      // Show success message
+                      alert('Adding successful!');
+                    }
+                    else{
+                      alert('Adding failed! Try again when you are online.')
+                    }
+                  });
+                });
+              })
+              .catch((err) => console.error(err));
+          } else {
+            // Show error message if browser doesn't support Background Sync
+            alert('Adding failed! Try again when you are online.');
+          }
       });
   };
-  
+
   const onError = (values) => {
     const fieldsWithError = form.getFieldsError().filter(({ errors }) => errors.length > 0);
     const fieldToPanelMap = {
@@ -74,10 +104,10 @@ export default function Qual() {
         <Form form={form} onFinish={onFinish} onFinishFailed={onError} scrollToFirstError={true} style={{ width: '100%', fontSize: '1.8em' }}>
           <Collapse activeKey={activeSections} onChange={handleSectionChange} className="quant-collapse">
             <Panel header="Match Data" key="section1" id="section1">
-              <Form.Item label="Número de Equipo" name="field1" rules={[{ required: true, message: 'Falta!' }]}>
+              <Form.Item label="Team Number" name="field1" rules={[{ required: true, message: 'Falta!' }]}>
                 <Input />
               </Form.Item>
-              <Form.Item label="Número de Partido" name="field2" rules={[{ required: true, message: 'Falta!' }]}>
+              <Form.Item label="Match Number" name="field2" rules={[{ required: true, message: 'Falta!' }]}>
                 <Input />
               </Form.Item>
               <Form.Item label="Scouter" name="field3" rules={[{ required: true, message: 'Falta!' }]}>
@@ -85,7 +115,7 @@ export default function Qual() {
               </Form.Item>
             </Panel>
             <Panel header="Match" key="section2" id="section2">
-              <Form.Item label="Análisis" name="field4" rules={[{ required: true, message: 'Falta!' }]}>
+              <Form.Item label="Analysis" name="field4" rules={[{ required: true, message: 'Falta!' }]}>
                 <ReactQuill theme="snow" value={value} onChange={setValue} />
               </Form.Item>
             </Panel>

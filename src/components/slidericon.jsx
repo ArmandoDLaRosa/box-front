@@ -4,7 +4,6 @@ import React from 'react';
 import { Slider } from 'antd';
 import { FrownOutlined, SmileOutlined } from '@ant-design/icons';
 
-
 export default function SliderInput({ value = 0, onChange }) {
     return (
         <div style={{ display: "flex" }}>

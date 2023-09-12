@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import { Pit, Qual, Quant } from "./components";
+import { useServiceWorker } from "./hooks/useServiceWorker";
 
 import "antd/dist/reset.css";
-import { Layout, Menu, Typography } from "antd";
-import { RobotOutlined, FileTextOutlined, NumberOutlined } from "@ant-design/icons";
+import { Layout, Menu, Typography, notification} from "antd";
+import { RobotOutlined, FileTextOutlined, NumberOutlined, ReloadOutlined, NotificationOutlined} from "@ant-design/icons";
 
 const { Header, Content, Sider } = Layout;
 const { Title } = Typography;
@@ -41,7 +42,29 @@ const items = [
 ];
 
 function App() {
+  useEffect(() => {
+    document.title = "Steamex Box App";
+  }, []);
+
+  const { waitingWorker, showReload, reloadPage } = useServiceWorker();
   const [collapsed, setCollapsed] = useState(false);
+
+  // decides when to show the toast
+  useEffect(() => {
+    if (showReload && waitingWorker) {
+      notification.open({
+        placement: "bottomRight",
+        message: 'Update Available',
+        description: <b> Click to reload </b>,
+        duration:0,
+        icon: <NotificationOutlined />,
+        onClose: reloadPage,
+        onClick: reloadPage,
+        closeIcon: <ReloadOutlined />,
+      });
+    }
+  }, [waitingWorker, showReload, reloadPage]);
+
   return (
     <Router>
       <Layout

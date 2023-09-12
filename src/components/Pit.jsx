@@ -16,11 +16,68 @@ export default function Qual() {
   const [activeSections, setActiveSections] = useState(['section1']);
 
   const onFinish = (values) => {
-    console.log(values)
-    form.resetFields();
-    setActiveSections(['section1']);
+    const team_number = values['field1'];
+    const team_name = values['field2'];
+    const user = values['field3'];
+    delete values['field2'];
+    delete values['field1'];
+    delete values['field3'];
+    fetch('https://siabox.herokuapp.com/pit', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        team_number: team_number,
+        team_name: team_name,
+        data: JSON.stringify(values) || "",
+        created_by: user,
+        updated_by: user
+      }),
+    })
+      .then(() => {
+        alert('Match posted!');
+        form.resetFields();
+        setActiveSections(['section1']);
+
+      })
+      .catch((error) => {
+          console.error(error);
+          if ('serviceWorker' in navigator && 'SyncManager' in window) {
+            // Register a sync event and queue the request
+            navigator.serviceWorker.ready
+              .then((registration) => {
+                // Queue the failed request
+                registration.sync.register('pitSync').then(() => {
+                  // Clear input variables
+                  form.resetFields();
+                  setActiveSections(['section1']);
+      
+                  // Show queued message
+                  alert('Match queued!');
+      
+                  // Listen for sync event to know when the sync is complete
+                  navigator.serviceWorker.addEventListener('message', (event) => {
+                    if (event.data.type === 'syncComplete') {
+                      // Show success message
+                      alert('Adding successful!');
+                    }
+                    else{
+                      alert('Adding failed! Try again when you are online.')
+                    }
+                  });
+                });
+              })
+              .catch((err) => console.error(err));
+          } else {
+            // Show error message if browser doesn't support Background Sync
+            alert('Adding failed! Try again when you are online.');
+          }
+      });
   };
 
+  
 
   const onError = (values) => {
     const fieldsWithError = form.getFieldsError().filter(({ errors }) => errors.length > 0);
@@ -31,7 +88,6 @@ export default function Qual() {
       field3: 'section1',
       // Section 2
       field4: 'section2',
-      field4_unit: 'section2',
       field5: 'section2',
       field6: 'section2',
       field7: 'section2',
@@ -89,7 +145,37 @@ export default function Qual() {
     }
   };
 
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.ready.then(registration => {
+        const handleConnectionStatusChange = () => {
+          const isOnline = navigator.onLine;
+          // Send a message to the service worker to update its connection status
+          registration.active.postMessage({
+            type: 'connectionStatusChanged',
+            isOnline: isOnline,
+          });
+          if (isOnline) {
+            alert('You are now back online. Queued posts will be sent automatically.');
+          } else {
+            const message = navigator.serviceWorker.controller ?
+              'You are currently offline. Any posts made will be queued and sent when you are back online.' :
+              'You are offline and the post could not be queued. Please try again when you are online.';
+            alert(message);
+          }
+        };
 
+        // Listen to the "online" and "offline" events on the window object
+        window.addEventListener('online', handleConnectionStatusChange);
+        window.addEventListener('offline', handleConnectionStatusChange);
+
+        return () => {
+          window.removeEventListener('online', handleConnectionStatusChange);
+          window.removeEventListener('offline', handleConnectionStatusChange);
+        };
+      });
+    }
+  }, []);
 
   return (
     <div>

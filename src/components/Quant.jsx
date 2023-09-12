@@ -20,29 +20,60 @@ export default function Quant() {
     delete values['field1'];
     delete values['field3'];
     fetch('https://siabox.herokuapp.com/quant', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-          match_id:  match_id,
-          robot_id:  robot_id, 
-          stats:  JSON.stringify(values), 
-          created_by: user, 
-          updated_by: user
-        }),
-      })
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        match_id: match_id,
+        robot_id: robot_id,
+        stats: JSON.stringify(values) || "",
+        created_by: user,
+        updated_by: user
+      }),
+    })
       .then(() => {
-        console.log("Success: ", values)
+        alert('Match posted!');
         form.resetFields();
         setActiveSections(['section1']);
+
       })
       .catch((error) => {
-        console.log('Error: ', error);
+          console.error(error);
+          if ('serviceWorker' in navigator && 'SyncManager' in window) {
+            // Register a sync event and queue the request
+            navigator.serviceWorker.ready
+              .then((registration) => {
+                // Queue the failed request
+                registration.sync.register('pitSync').then(() => {
+                  // Clear input variables
+                  form.resetFields();
+                  setActiveSections(['section1']);
+      
+                  // Show queued message
+                  alert('Match queued!');
+      
+                  // Listen for sync event to know when the sync is complete
+                  navigator.serviceWorker.addEventListener('message', (event) => {
+                    if (event.data.type === 'syncComplete') {
+                      // Show success message
+                      alert('Adding successful!');
+                    }
+                    else{
+                      alert('Adding failed! Try again when you are online.')
+                    }
+                  });
+                });
+              })
+              .catch((err) => console.error(err));
+          } else {
+            // Show error message if browser doesn't support Background Sync
+            alert('Adding failed! Try again when you are online.');
+          }
       });
   };
-
+  
   const onError = (values) => {
     const fieldsWithError = form.getFieldsError().filter(({ errors }) => errors.length > 0);
     const fieldToPanelMap = {
@@ -77,9 +108,8 @@ export default function Quant() {
   };
 
 
-  
+
   const handleSectionChange = (openPanels) => {
-    console.log(openPanels);
 
     setActiveSections(openPanels.slice(-1)); // keep only the last panel that was opened
     const lastOpenedPanel = openPanels.slice(-1)[0];
@@ -108,18 +138,18 @@ export default function Quant() {
         <Form form={form} onFinish={onFinish} onFinishFailed={onError} scrollToFirstError={true} style={{ width: '100%', fontSize: '1.8em' }}>
           <Collapse activeKey={activeSections} onChange={handleSectionChange} className="quant-collapse">
             <Panel header="Match Data" key="section1" id="section1">
-              <Form.Item label="Número de Equipo" name="field1" rules={[{ required: true }]}>
+              <Form.Item label="Team Number" name="field1" rules={[{ required: true }]}>
                 <Input />
               </Form.Item>
-              <Form.Item label="Número de Partido" name="field2" rules={[{ required: true }]}>
+              <Form.Item label="Match Number" name="field2" rules={[{ required: true }]}>
                 <Input />
               </Form.Item>
               <Form.Item label="Scouter" name="field3" rules={[{ required: true }]}>
                 <Input />
               </Form.Item>
             </Panel>
-            <Panel header="Autonomo" key="section2" id="section2">
-              <Form.Item label="Punto de inicio del robot" name="field4">
+            <Panel header="Auto" key="section2" id="section2">
+              <Form.Item label="Robot's starting position" name="field4">
                 <Radio.Group>
                   <Card hoverable style={{ width: 200, height: 170 }} cover={<img alt="field" src={require(`../image/STARTING.jpg`)} />} />
                   <Radio value="1">A</Radio>
@@ -127,18 +157,17 @@ export default function Quant() {
                   <Radio value="3">C</Radio>
                 </Radio.Group>
               </Form.Item>
-              <Form.Item label="Número de piezas colocadas en el primer nivel" name="field5">
+              <Form.Item label="Number of game pieces placed on the 1st level" name="field5">
                 <ClickerInput />
               </Form.Item>
-              <Form.Item label="Número de piezas colocadas en el segundo nivel" name="field6">
+              <Form.Item label="Number of game pieces placed on the 2nd level" name="field6">
                 <ClickerInput />
               </Form.Item>
-              <Form.Item label="Número de piezas colocadas en el tercer nivel" name="field7">
+              <Form.Item label="Number of game pieces placed on the 3rd level" name="field7">
                 <ClickerInput />
               </Form.Item>
-              <Form.Item label="Zona en la que colocó las gp" name="field8" >
+              <Form.Item label="Zone(s) where game pieces where placed" name="field8" >
                 <Checkbox.Group >
-
                   <Row style={{ display: "block" }}>
                     <Col span={24}>
                       <Card hoverable style={{ width: 200, height: 140 }} cover={<img alt="field" src={require(`../image/GAMEP.jpg`)} style={{ display: 'block' }} />} />
@@ -163,7 +192,7 @@ export default function Quant() {
                   </Row>
                 </Checkbox.Group>
               </Form.Item>
-              <Form.Item label="Tipo de Game Piece manejada" name="field9" >
+              <Form.Item label="Game Piece Type(s)" name="field9" >
                 <GPInput />
               </Form.Item>
               <Form.Item label="Mobility Points" name="field10">
@@ -172,24 +201,24 @@ export default function Quant() {
                   <Radio value="1">Yes</Radio>
                 </Radio.Group>
               </Form.Item>
-              <Form.Item label="Estado de la rampa" name="field11">
+              <Form.Item label="Charge Station State" name="field11">
                 <Radio.Group>
                   <Radio value="1">Docked</Radio>
                   <Radio value="2">Engaged</Radio>
                 </Radio.Group>
               </Form.Item>
             </Panel>
-            <Panel header="Teleoperado" key="section3" id="section3">
-              <Form.Item label="Número de piezas colocadas en el primer nivel" name="field12">
+            <Panel header="Teleop" key="section3" id="section3">
+              <Form.Item label="Number of game pieces placed on the 1st level" name="field12">
                 <ClickerInput />
               </Form.Item>
-              <Form.Item label="Número de piezas colocadas en el segundo nivel" name="field13">
+              <Form.Item label="Number of game pieces placed on the 2nd level" name="field13">
                 <ClickerInput />
               </Form.Item>
-              <Form.Item label="Número de piezas colocadas en el tercer nivel" name="field14">
+              <Form.Item label="Number of game pieces placed on the 3rd level" name="field14">
                 <ClickerInput />
               </Form.Item>
-              <Form.Item label="Zona en la que colocó las gp" name="field15" >
+              <Form.Item label="Zone(s) where game pieces where placed" name="field15" >
                 <Checkbox.Group >
 
                   <Row style={{ display: "block" }}>
@@ -216,10 +245,10 @@ export default function Quant() {
                   </Row>
                 </Checkbox.Group>
               </Form.Item>
-              <Form.Item label="Tipo de Game Piece manejada" name="field16" >
+              <Form.Item label="Game Piece Type(s)" name="field16" >
                 <GPInput />
               </Form.Item>
-              <Form.Item label="Estado de la rampa" name="field17">
+              <Form.Item label="Charge Station State" name="field17">
                 <Radio.Group>
                   <Radio value="0">Parked</Radio>
                   <Radio value="1">Docked</Radio>
@@ -230,17 +259,17 @@ export default function Quant() {
             <Panel header="End" key="section4" id="section4">
               <Form.Item label="Feeder" name="field18">
                 <Radio.Group>
-                  <Radio value="0">NO</Radio>
-                  <Radio value="1">YES</Radio>
+                  <Radio value="0">No</Radio>
+                  <Radio value="1">Yes</Radio>
                 </Radio.Group>
               </Form.Item>
-              <Form.Item label="Defensa" name="field19">
+              <Form.Item label="Defense" name="field19">
                 <Radio.Group onChange={handleDefenseChange} value={defenseValue}>
-                  <Radio value="0">NO</Radio>
-                  <Radio value="1">YES</Radio>
+                  <Radio value="0">No</Radio>
+                  <Radio value="1">Yes</Radio>
                 </Radio.Group>
               </Form.Item>
-              <Form.Item label="Calificación de defensa" name="field20">
+              <Form.Item label="Defense Score" name="field20">
                 <Slider
                   marks={{
                     0: '0',
@@ -261,10 +290,10 @@ export default function Quant() {
                   disabled={defenseValue === '0'}
                 />
               </Form.Item>
-              <Form.Item label="Desconexión" name="field21" >
+              <Form.Item label="Disconnection" name="field21" >
                 <Radio.Group onChange={handleDefenseChange} value={defenseValue}>
-                  <Radio value="0">NO</Radio>
-                  <Radio value="1">YES</Radio>
+                  <Radio value="0">No</Radio>
+                  <Radio value="1">Yes</Radio>
                 </Radio.Group>
               </Form.Item>
             </Panel>

@@ -39,7 +39,7 @@ export default function LengthInput({ value = {}, onChange }) {
             <InputNumber
                 placeholder={"0.00"}
                 min="0"
-                max="10"
+                max="10000"
                 step="0.01"
                 stringMode
                 value={value.number || number}

@@ -11,7 +11,8 @@ import { clientsClaim } from 'workbox-core';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
-import { StaleWhileRevalidate } from 'workbox-strategies';
+import { StaleWhileRevalidate, NetworkFirst } from 'workbox-strategies';
+import { BackgroundSyncPlugin, Queue } from 'workbox-background-sync';
 
 clientsClaim();
 
@@ -50,15 +51,69 @@ registerRoute(
 // precache, in this case same-origin .png requests like those from in public/
 registerRoute(
   // Add in any other file extensions or routing criteria as needed.
-  ({ url }) => url.origin === self.location.origin && url.pathname.endsWith('.png'), // Customize this strategy as needed, e.g., by changing to CacheFirst.
+  ({ url }) => url.origin === self.location.origin && (url.pathname.endsWith('.png') || url.pathname.endsWith('.json') || url.pathname.endsWith('.ico') || url.pathname.endsWith('.html') || url.pathname.endsWith('.js')), //Customize this strategy as needed, e.g., by changing to CacheFirst.
   new StaleWhileRevalidate({
-    cacheName: 'images',
+    cacheName: 'imagesAndfiles',
     plugins: [
       // Ensure that once this runtime cache reaches a maximum size the
       // least-recently used images are removed.
       new ExpirationPlugin({ maxEntries: 50 }),
     ],
   })
+);
+
+registerRoute(
+  'https://siabox.herokuapp.com/qual',
+  new NetworkFirst(),
+  'GET'
+);
+
+registerRoute(
+  'https://siabox.herokuapp.com/quant',
+  new NetworkFirst(),
+  'GET'
+);
+
+registerRoute(
+  'https://siabox.herokuapp.com/pit',
+  new NetworkFirst(),
+  'GET'
+);
+
+const qualbgSyncPlugin = new BackgroundSyncPlugin('qualQueue', {
+  maxRetentionTime: 24 * 60,
+});
+
+registerRoute(
+  'https://siabox.herokuapp.com/qual',
+  new NetworkFirst({
+    plugins: [qualbgSyncPlugin]
+  }),
+  'POST'
+);
+
+const quantbgSyncPlugin = new BackgroundSyncPlugin('quantQueue', {
+  maxRetentionTime: 24 * 60,
+});
+
+registerRoute(
+  'https://siabox.herokuapp.com/quant',
+  new NetworkFirst({
+    plugins: [quantbgSyncPlugin]
+  }),
+  'POST'
+);
+
+const pitbgSyncPlugin = new BackgroundSyncPlugin('pitQueue', {
+  maxRetentionTime: 24 * 60,
+});
+
+registerRoute(
+  'https://siabox.herokuapp.com/pit',
+  new NetworkFirst({
+    plugins: [pitbgSyncPlugin]
+  }),
+  'POST'
 );
 
 // This allows the web app to trigger skipWaiting via
@@ -69,4 +124,76 @@ self.addEventListener('message', (event) => {
   }
 });
 
-// Any other custom service worker logic can go here.
+// Any other custom service worker  logic can go here.
+
+// Install and activate the service worker
+self.addEventListener('install', function(event) {
+  event.waitUntil(
+    caches.open('workbox-precache-v2-https://siabox-front.herokuapp.com/').then(function(cache) {
+      return cache.addAll([
+        '/index.html',
+        '/styles.css',
+        '/app.js',
+        '/images/logo.png',
+        '/manifest.json'
+      ]);
+    })
+  );
+  self.skipWaiting();
+});
+
+self.addEventListener('fetch', function(event) {
+  if (event.request.mode !== 'navigate') {
+    return;
+  }
+  event.respondWith(
+    caches.match(event.request, {ignoreSearch: true}).then(function(response) {
+      if (response) {
+        return response;
+      }
+      return fetch(event.request).catch(function(){
+        return caches.open('workbox-precache-v2-https://siabox-front.herokuapp.com/').then(function(cache){
+            return cache.match(event.request);
+        });
+    });
+    }).catch(function(error) {
+
+      return caches.match('index.html');
+
+    })
+  );
+});
+
+self.addEventListener('sync', (event) => {
+  console.log('3_blahblahblah');
+  if (event.tag === 'pitSync') {
+    event.waitUntil(syncPit());
+  }
+  if (event.tag === 'quantSync') {
+    event.waitUntil(syncPit());
+  }
+  if (event.tag === 'qualSync') {
+    event.waitUntil(syncPit());
+  }
+});
+
+const syncPit = async () => {
+  console.log('4_blahblahblahblah');
+  const queue = await Queue.getQueue({ name: 'pitQueue' });
+  const requests = queue.getAll();
+
+  for (const request of requests) {
+    const response = await fetch(request.request);
+
+    if (response.ok) {
+      queue.remove(request.id);
+    }
+  }
+
+  // Send message to client to indicate that sync is complete
+  self.clients.matchAll().then((clients) => {
+    clients.forEach((client) => {
+      client.postMessage({ type: 'syncComplete' });
+    });
+  });
+};
